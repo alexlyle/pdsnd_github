@@ -1,4 +1,4 @@
-### Date created: Jan 21, 2020
+### Date created: Jan 21, 2020 8:16 PM EST
 Include the date you created this project and README file.
 
 ### Bikeshare Project
