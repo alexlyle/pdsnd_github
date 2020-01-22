@@ -36,10 +36,10 @@ for city in sel_city:
     if city_list.title() == 'All':
        df
        break
-    else: 
+    else:
        df = df.loc[df['city'].isin(sel_city)]
 
-# extract hour, month, and day of week from Start Time to create new columns           
+# extract hour, month, and day of week from Start Time to create new columns
 df['Start Time'] = pd.to_datetime(df['Start Time'])
 df['hour'] =  df['Start Time'].dt.hour
 df['month'] = df['Start Time'].dt.month_name()
@@ -56,7 +56,7 @@ while True:
         break
     else:
         month_list = input('\nInvalid month- verify spelling and reenter: ')
-           
+
 sel_month =  month_list.split(',')
 sel_month = [month.title() for month in sel_month];sel_month #see sel_city comment
 for month in sel_month:
@@ -97,14 +97,14 @@ choice = str(ch)
 #print(choice)
 st = 0
 sp = 0
-while choice != 'quit': 
+while choice != 'quit':
     if choice == 'raw data':
         sp += 5
         start = int(st)
         stop = int(sp)
         rd = df[start:stop]
         print(rd)
-        choice = input('\n type "raw data" for 5 more lines of raw data, \n "stats" for statiscs, or "quit": ')   
+        choice = input('\n type "raw data" for 5 more lines of raw data, \n "stats" for statiscs, or "quit": ')
     elif choice == 'stats':
         #travel day and time info
         mcm = df.mode()['month'][0]
@@ -113,7 +113,7 @@ while choice != 'quit':
         print('\nPopular times of travel')
         print('Most common month: ',mcm)
         print('Most common day of week: ',mcd)
-        print('Most common hour of day: ',mch)        
+        print('Most common hour of day: ',mch)
         #stations and trips info
         df['trip'] = df['Start Station']+df['End Station']
         css = df.mode()['Start Station'][0]
@@ -125,9 +125,18 @@ while choice != 'quit':
         print('Most common end station: ',cdw)
         print('Most common trip from start to end: ',mct)
         #trip duration info
-        pd.to_numeric(df['Trip Duration'], downcast = 'signed') 
+        df['dummy'] = 'Trip Duration'
+        t_dur = df.groupby(['dummy'])['Trip Duration'].sum()
+        t_dur = dict(t_dur)
+        t_mean= df.groupby(['dummy'])['Trip Duration'].mean()
+        t_mean = dict(t_mean)
+        for key, value in t_dur.items():
+        print("{}: {}".format(key, value))
+
+
+        pd.to_numeric(df['Trip Duration'], downcast = 'signed')
         df['Trip Duration']= df['Trip Duration']/60
-        tot = df.sum(axis = 0)['Trip Duration']
+
         avg = df.mean()['Trip Duration']
         print(" ")
         print('Trip duration')
@@ -143,7 +152,7 @@ while choice != 'quit':
             print('\nAge demographics')
             print('Earliest year of birth: ',eby)
             print('Most recent birth: ',rby)
-            print('Most common year of birth: ',cby)    
+            print('Most common year of birth: ',cby)
         #usergroup info
         user_group = df.groupby(['User Type'])['Birth Year'].count()
         user_type = dict(user_group)
@@ -151,12 +160,12 @@ while choice != 'quit':
         print('User type info')
         for key, value in user_type.items():
             print("{}: {}".format(key, value)) #stack overflow assisted
-            break           
+            break
         #gender info
         gender_group = df.groupby(['Gender'])['Gender'].count()
         gender = dict(gender_group)
         if sel_city == ['Washington']:
-            print('\nGender info not available for Washington')   
+            print('\nGender info not available for Washington')
         else:
             print('\nUsage by Gender')
             for key, value in gender.items():
@@ -164,7 +173,7 @@ while choice != 'quit':
         choice = input('\ntype "raw data" for raw data or "quit" to quit ')
     #exit the program
     elif choice == 'quit':
-        print('good bye')  
+        print('good bye')
     #error correction
     else:
         choice = input('verify typing and reenter ' )
