@@ -12,3 +12,4 @@ Include the files used
 
 ### Credits
 Any structural ideas from third parties are referenced in the python script.
+http://introtopython.org/while_input.html gave me the idea for the menu and while loop
