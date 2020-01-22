@@ -132,12 +132,9 @@ while choice != 'quit':
         t_mean = dict(t_mean)
         for key, value in t_dur.items():
         print("{}: {}".format(key, value))
+        for key, value in t_mean.items():
+        print("{}: {}".format(key, value))
 
-
-        pd.to_numeric(df['Trip Duration'], downcast = 'signed')
-        df['Trip Duration']= df['Trip Duration']/60
-
-        avg = df.mean()['Trip Duration']
         print(" ")
         print('Trip duration')
         print('Total travel time (in minutes): ',round(tot,2))
